@@ -59,26 +59,6 @@ print(city)
 
 ---
 
-## Installing and Loading Packages
-
-Installing and loading packages can extend R's functionality instantly.
-
-```r
-# Installing packages (only need to do this once per package)
-install.packages("tidyverse")
-install.packages("devtools")
-
-# Loading packages into your current session with library()
-library(tidyverse)   # A suite of packages for data science tasks (dplyr, ggplot2, etc.)
-library(lubridate)   # For simpler date and time manipulation
-```
-
-**Deep Dive:**  
-- **Package Management:** Use `update.packages()` periodically to keep your packages up-to-date. When collaborating, consider using a project management tool like `renv` or `packrat` to ensure reproducibility.
-- **Tidyverse:** This ecosystem is designed for readability and efficiency, streamlining data manipulation and visualization.
-
----
-
 ## Date and Time Functions Using Lubridate
 
 Manipulating dates and times is made easy with the `lubridate` package.
