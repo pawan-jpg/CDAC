@@ -1,11 +1,3 @@
----
-
-# R Fundamentals: A Comprehensive Deep Dive
-
-This guide covers essential R topics with code examples and detailed explanations. Whether you are a beginner or looking to polish your skills, this document explains how R works from basic data structures to advanced data manipulation. You can copy and paste this entire Markdown text into your editor for reference.
-
----
-
 ## Table of Contents
 
 1. [Vectors and Basic Data Structures](#vectors-and-basic-data-structures)
