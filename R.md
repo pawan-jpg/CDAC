@@ -1232,8 +1232,87 @@ gather(comb1, -District, key = "Items", value = "Item_count")
 ```
 - Excludes the `District` column and gathers all other columns.
 
+# Data Joining in R
+
 ---
 
+## **1. Joining Course Data**
+
+### **Loading Data**
+```R
+courses <- read.csv("Courses.csv")
+course_schedule <- read.csv("CourseSchedule.csv")
+```
+
+### **Inner Join**
+```R
+course_info <- courses %>%
+  rename(CourseCode = CourseID) %>%
+  inner_join(course_schedule, by = "CourseCode")
+
+View(course_info)
+```
+
+### **Renaming Columns**
+```R
+course_schedule <- rename(course_schedule, CourseID = CourseCode)
+View(course_schedule)
+```
+
+### **Other Joins**
+#### Left Join
+```R
+View(courses %>%
+  left_join(course_schedule, by = "CourseID"))
+```
+
+#### Right Join
+```R
+View(courses %>%
+  right_join(course_schedule, by = "CourseID"))
+```
+
+#### Full Join
+```R
+View(courses %>%
+  full_join(course_schedule, by = "CourseID"))
+```
+
+### **Alternative Inner Join**
+```R
+course_schedule <- rename(course_schedule, CourseID = CourseCode)
+crs_2 <- inner_join(course_schedule, courses, by = "CourseID")
+```
+
+---
+
+## **2. Joining Order Data**
+
+### **Loading Data**
+```R
+ord <- read.csv("Orders.csv")
+item <- read.csv("Items.csv")
+ord_det <- read.csv("Ord_Details.csv")
+```
+
+### **Step-by-Step Inner Joins**
+1. Join `ord_det` with `ord` on `Order.ID`:
+   ```R
+   ord_1 <- inner_join(ord_det, ord, by = "Order.ID")
+   ```
+
+2. Join the result (`ord_1`) with `item` on `Item.ID`:
+   ```R
+   ord_2 <- inner_join(ord_1, item, by = "Item.ID")
+   View(ord_2)
+   ```
+
+### **Chaining Joins with Pipes**
+```R
+join <- ord %>%
+  inner_join(ord_det, by = "Order.ID") %>%
+  inner_join(item, by = "Item.ID")
+```
 ## **5. Advanced Topics**
 
 ### **Bias Checking with SimDesign**
@@ -1251,9 +1330,6 @@ ggplot(quartet, aes(x = x, y = y)) +
   geom_smooth(method = "lm", se = FALSE) +
   facet_wrap(~ set)
 ```
-
----
-
 ## **6. Visualization with ggplot2**
 
 ### **Scatter Plot**
