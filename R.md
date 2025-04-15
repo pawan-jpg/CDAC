@@ -1255,6 +1255,7 @@ View(course_info)
 
 ### **Renaming Columns**
 ```R
+rename( < TableName/DataFrame > , < NewName > = < OldName >)
 course_schedule <- rename(course_schedule, CourseID = CourseCode)
 View(course_schedule)
 ```
