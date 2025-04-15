@@ -1101,3 +1101,175 @@ ggplot(quartet, aes(x = x, y = y)) +
 ---
 
 
+## 15-04-2025
+# Data Manipulation and Transformation in R
+
+## **1. Data Manipulation with dplyr**
+
+The `dplyr` package is a powerful tool for data manipulation in R. It provides a variety of functions to handle and transform data frames.
+
+### **Key Functions in dplyr**
+1. **`mutate()`**: Adds new columns or modifies existing ones.
+   ```R
+   survey %>%
+     mutate(Ratio_Hnd = round(Wr.Hnd / NW.Hnd, 2))
+   ```
+   - Creates a new column `Ratio_Hnd` by dividing `Wr.Hnd` by `NW.Hnd` and rounding to 2 decimal places.
+
+2. **`select()`**: Selects specific columns.
+   ```R
+   survey %>%
+     select(Ratio_Hnd, Clap, Age)
+   ```
+   - Extracts only the specified columns.
+
+3. **`summarize()`**: Computes summary statistics.
+   ```R
+   survey %>%
+     summarize(mean_of_age = mean(Age, na.rm = TRUE),
+               Stan_dev = sd(Age, na.rm = TRUE))
+   ```
+   - Calculates the mean and standard deviation of `Age`.
+
+4. **`group_by()`**: Groups data by a categorical variable.
+   ```R
+   survey %>%
+     group_by(Sex) %>%
+     summarize(mean_of_age = mean(Age, na.rm = TRUE),
+               Stan_dev = sd(Age, na.rm = TRUE))
+   ```
+   - Groups data by `Sex` and computes summary statistics for each group.
+
+---
+
+## **2. Joins in dplyr**
+
+Joins are used to combine data from multiple tables based on common keys. The `dplyr` package provides several types of joins:
+
+### **Types of Joins**
+1. **Inner Join**:
+   - Combines rows from two tables where the key matches in both.
+   ```R
+   inner_join(A, B, by = "IdNum")
+   ```
+
+2. **Left Join**:
+   - Keeps all rows from the left table and matches rows from the right table.
+   ```R
+   left_join(A, B, by = "IdNum")
+   ```
+
+3. **Right Join**:
+   - Keeps all rows from the right table and matches rows from the left table.
+   ```R
+   right_join(A, B, by = "IdNum")
+   ```
+
+4. **Full Join**:
+   - Combines all rows from both tables, filling in `NA` where there is no match.
+   ```R
+   full_join(A, B, by = "IdNum")
+   ```
+
+### **Example: Joining Course Data**
+```R
+course_info <- courses %>%
+  rename(CourseCode = CourseID) %>%
+  inner_join(course_schedule, by = "CourseCode")
+```
+
+---
+
+## **3. Data Reshaping with tidyr**
+
+The `tidyr` package is used to reshape data between wide and long formats.
+
+### **Key Functions in tidyr**
+1. **`gather()`**: Converts wide data into long format.
+   ```R
+   gather(comb1, Highlighter, Marker, Pen, Refill, key = "Items", value = "Item_count")
+   ```
+   - Combines multiple columns (`Highlighter`, `Marker`, etc.) into key-value pairs.
+
+2. **`spread()`**: Converts long data into wide format.
+   ```R
+   spread(table2, key = 'type', value = 'count')
+   ```
+   - Spreads key-value pairs into separate columns.
+
+3. **`separate()`**: Splits a column into multiple columns.
+   ```R
+   separate(table3, rate, into = c("cases", "pop"), sep = "/")
+   ```
+   - Splits the `rate` column into `cases` and `pop` using `/` as the separator.
+
+4. **`unite()`**: Combines multiple columns into one.
+   ```R
+   unite(employee, "name", first_name, last_name, sep = " ")
+   ```
+   - Combines `first_name` and `last_name` into a single column `name`.
+
+---
+
+## **4. Practical Examples**
+
+### **Handling Missing Values**
+```R
+survey %>%
+  summarize(mean_of_age = mean(Age, na.rm = TRUE))
+```
+- The `na.rm = TRUE` argument ensures missing values are ignored during calculations.
+
+### **Using Backticks for Column Names**
+```R
+gather(table4a, `1999`, `2000`, key = 'Year', value = 'cases')
+```
+- Backticks are used for column names that are numbers or contain special characters.
+
+### **Combining Multiple Columns**
+```R
+gather(comb1, -District, key = "Items", value = "Item_count")
+```
+- Excludes the `District` column and gathers all other columns.
+
+---
+
+## **5. Advanced Topics**
+
+### **Bias Checking with SimDesign**
+The `SimDesign` package can calculate bias between actual and predicted values:
+```R
+bias(actual_temp, predicted_temp)
+```
+- Computes systematic error between actual and predicted values.
+
+### **Anscombe's Quartet**
+Visualizing datasets with identical summary statistics but different distributions:
+```R
+ggplot(quartet, aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ set)
+```
+
+---
+
+## **6. Visualization with ggplot2**
+
+### **Scatter Plot**
+```R
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = flipper_length_mm, y = body_mass_g))
+```
+- Creates a scatter plot of `flipper_length_mm` vs `body_mass_g`.
+
+### **Faceting**
+```R
+ggplot(penguins) +
+  geom_point(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  facet_wrap(~ species)
+```
+- Creates separate plots for each species.
+
+---
+
